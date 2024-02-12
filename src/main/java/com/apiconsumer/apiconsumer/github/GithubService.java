@@ -17,7 +17,6 @@ public class GithubService {
 
     public ArrayList<Response> getUserRepos(String username) {
         List<Repo> reposByUsername = githubApiClient.getReposByUsername(username);
-
         return reposByUsername.stream()
                 .filter(repo -> !repo.fork())
                 .map(repo -> new Response(

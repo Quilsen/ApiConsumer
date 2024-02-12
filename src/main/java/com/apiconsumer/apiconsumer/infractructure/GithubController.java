@@ -29,5 +29,4 @@ class GithubController {
             return ResponseEntity.status(e.status()).body(customResponse);
         }
     }
-
 }
