@@ -1,6 +1,8 @@
 package com.apiconsumer.apiconsumer.github;
 
 import com.apiconsumer.apiconsumer.github.repo.Repo;
+import com.apiconsumer.apiconsumer.github.response.Response;
+import com.apiconsumer.apiconsumer.github.response.ResponseBranch;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

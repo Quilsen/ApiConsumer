@@ -1,4 +1,4 @@
-package com.apiconsumer.apiconsumer.github;
+package com.apiconsumer.apiconsumer.github.response;
 
 import java.util.List;
 

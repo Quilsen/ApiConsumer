@@ -1,8 +1,8 @@
 package com.apiconsumer.apiconsumer.infractructure;
 
-import com.apiconsumer.apiconsumer.github.CustomResponse;
+import com.apiconsumer.apiconsumer.github.response.CustomResponse;
 import com.apiconsumer.apiconsumer.github.GithubService;
-import com.apiconsumer.apiconsumer.github.Response;
+import com.apiconsumer.apiconsumer.github.response.Response;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
