@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 public class GithubService {
     private final GithubApiClient githubApiClient;
 
-    public ArrayList<Response> getUserRepos(String username) {
+    public List<Response> getUserRepos(String username) {
         List<Repo> reposByUsername = githubApiClient.getReposByUsername(username);
         return reposByUsername.stream()
                 .filter(repo -> !repo.fork())
                 .map(repo -> new Response(
-                                repo.name(),
-                                repo.owner().login(),
-                                getResponseBranch(repo))
+                        repo.name(),
+                        repo.owner().login(),
+                        getResponseBranch(repo))
                 )
                 .collect(Collectors.toCollection(ArrayList::new));
     }

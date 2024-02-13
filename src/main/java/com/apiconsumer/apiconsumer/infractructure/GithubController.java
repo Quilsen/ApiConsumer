@@ -1,7 +1,7 @@
 package com.apiconsumer.apiconsumer.infractructure;
 
-import com.apiconsumer.apiconsumer.github.response.CustomResponse;
 import com.apiconsumer.apiconsumer.github.GithubService;
+import com.apiconsumer.apiconsumer.github.response.CustomResponse;
 import com.apiconsumer.apiconsumer.github.response.Response;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -20,11 +20,11 @@ class GithubController {
     private final GithubService githubService;
 
     @GetMapping("/{username}")
-    ResponseEntity<?> listUserRepositories(@PathVariable String username){
+    ResponseEntity<?> listUserRepositories(@PathVariable String username) {
         try {
-            ArrayList<Response> userRepos = githubService.getUserRepos(username);
+            List<Response> userRepos = githubService.getUserRepos(username);
             return ResponseEntity.ok(userRepos);
-        } catch (FeignException e){
+        } catch (FeignException e) {
             CustomResponse customResponse = new CustomResponse(e.status(), e.getMessage());
             return ResponseEntity.status(e.status()).body(customResponse);
         }
