@@ -6,9 +6,7 @@ import com.apiconsumer.apiconsumer.github.response.ResponseBranch;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -24,13 +22,12 @@ public class GithubService {
                         repo.owner().login(),
                         getResponseBranch(repo))
                 )
-                .collect(Collectors.toCollection(ArrayList::new));
+                .toList();
     }
 
     private List<ResponseBranch> getResponseBranch(Repo repo) {
         return githubApiClient.getBranchNameAndSha(repo.owner().login(), repo.name()).stream()
                 .map(branch -> new ResponseBranch(branch.name(), branch.commit().sha()))
-                .collect(Collectors.toList());
+                .toList();
     }
-
 }

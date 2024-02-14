@@ -20,13 +20,8 @@ class GithubController {
     private final GithubService githubService;
 
     @GetMapping("/{username}")
-    ResponseEntity<?> listUserRepositories(@PathVariable String username) {
-        try {
-            List<Response> userRepos = githubService.getUserRepos(username);
-            return ResponseEntity.ok(userRepos);
-        } catch (FeignException e) {
-            CustomResponse customResponse = new CustomResponse(e.status(), e.getMessage());
-            return ResponseEntity.status(e.status()).body(customResponse);
-        }
+    ResponseEntity<List<Response>> listUserRepositories(@PathVariable String username) {
+        List<Response> userRepos = githubService.getUserRepos(username);
+        return ResponseEntity.ok(userRepos);
     }
 }
