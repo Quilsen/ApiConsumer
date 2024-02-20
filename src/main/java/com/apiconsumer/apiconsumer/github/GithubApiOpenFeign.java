@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Service
-@FeignClient(name = "githubClient",
+@FeignClient(name = "githubApiOpenFeign",
         url = "https://api.github.com")
-public interface GithubApiClient {
+public interface GithubApiOpenFeign {
     @RequestMapping(method = RequestMethod.GET,
             value = "/users/{username}/repos",
             headers = "Accept: application/json")
