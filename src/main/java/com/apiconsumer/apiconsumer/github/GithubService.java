@@ -7,21 +7,35 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class GithubService {
     private final GithubApiClient githubApiClient;
+    private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
-    public List<Response> getUserRepos(String username) {
+    public List<Response> getUserRepos(String username) throws ExecutionException, InterruptedException {
         List<Repo> reposByUsername = githubApiClient.getReposByUsername(username);
-        return reposByUsername.stream()
+        List<CompletableFuture<Response>> futures = reposByUsername.stream()
                 .filter(repo -> !repo.fork())
-                .map(repo -> new Response(
+                .map(repo -> CompletableFuture.supplyAsync(() -> new Response(
                         repo.name(),
                         repo.owner().login(),
-                        getResponseBranch(repo))
-                )
+                        getResponseBranch(repo)
+                ), executorService))
+                .toList();
+
+
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        allOf.get();
+
+        return futures.stream()
+                .map(CompletableFuture::join)
                 .toList();
     }
 
