@@ -1,9 +1,7 @@
 package com.apiconsumer.apiconsumer.infractructure;
 
 import com.apiconsumer.apiconsumer.github.GithubService;
-import com.apiconsumer.apiconsumer.github.response.CustomResponse;
 import com.apiconsumer.apiconsumer.github.response.Response;
-import feign.FeignException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +18,15 @@ import java.util.concurrent.ExecutionException;
 class GithubController {
     private final GithubService githubService;
 
-    @GetMapping("/{username}")
+    @GetMapping("/openfeign/{username}")
     ResponseEntity<List<Response>> listUserRepositories(@PathVariable String username) throws ExecutionException, InterruptedException {
-        List<Response> userRepos = githubService.getUserRepos(username);
+        List<Response> userRepos = githubService.getUserReposOpenFeign(username);
+        return ResponseEntity.ok(userRepos);
+    }
+
+    @GetMapping("/restclient/{username}")
+    ResponseEntity<List<Response>> listUserRepositoriesRestClient(@PathVariable String username) throws ExecutionException, InterruptedException {
+        List<Response> userRepos = githubService.getUserReposRestClient(username);
         return ResponseEntity.ok(userRepos);
     }
 }
