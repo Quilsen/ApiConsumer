@@ -1,4 +1,4 @@
-package com.apiconsumer.apiconsumer.github;
+package com.apiconsumer.apiconsumer.github.client;
 
 import com.apiconsumer.apiconsumer.github.branch.Branch;
 import com.apiconsumer.apiconsumer.github.repo.Repo;

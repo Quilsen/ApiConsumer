@@ -1,4 +1,4 @@
-package com.apiconsumer.apiconsumer.github;
+package com.apiconsumer.apiconsumer.github.client;
 
 import com.apiconsumer.apiconsumer.github.branch.Branch;
 import com.apiconsumer.apiconsumer.github.repo.Repo;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @FeignClient(name = "githubApiOpenFeign",
         url = "https://api.github.com")
-interface GithubApiOpenFeign extends GithubClient {
+public interface GithubApiOpenFeign extends GithubClient {
     @RequestMapping(method = RequestMethod.GET,
             value = "/users/{username}/repos",
             headers = "Accept: application/json")

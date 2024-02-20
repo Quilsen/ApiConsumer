@@ -1,5 +1,8 @@
 package com.apiconsumer.apiconsumer.github;
 
+import com.apiconsumer.apiconsumer.github.client.GithubApiOpenFeign;
+import com.apiconsumer.apiconsumer.github.client.GithubApiRestClient;
+import com.apiconsumer.apiconsumer.github.client.GithubClient;
 import com.apiconsumer.apiconsumer.github.repo.Repo;
 import com.apiconsumer.apiconsumer.github.response.Response;
 import com.apiconsumer.apiconsumer.github.response.ResponseBranch;
@@ -27,7 +30,7 @@ public class GithubService {
         return getUserRepos(username, githubApiRestClient);
     }
 
-    private List<Response> getUserRepos(String username,GithubClient githubClient) throws ExecutionException, InterruptedException {
+    private List<Response> getUserRepos(String username, GithubClient githubClient) throws ExecutionException, InterruptedException {
         List<Repo> reposByUsername = githubClient.getReposByUsername(username);
         List<CompletableFuture<Response>> futures = reposByUsername.stream()
                 .filter(repo -> !repo.fork())
