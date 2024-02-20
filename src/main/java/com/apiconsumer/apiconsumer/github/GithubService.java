@@ -16,19 +16,27 @@ import java.util.concurrent.Executors;
 @Service
 public class GithubService {
     private final GithubApiOpenFeign githubApiOpenFeign;
+    private final GithubApiRestClient githubApiRestClient;
     private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
-    public List<Response> getUserRepos(String username) throws ExecutionException, InterruptedException {
-        List<Repo> reposByUsername = githubApiOpenFeign.getReposByUsername(username);
+    public List<Response> getUserReposOpenFeign(String username) throws ExecutionException, InterruptedException {
+        return getUserRepos(username, githubApiOpenFeign);
+    }
+
+    public List<Response> getUserReposRestClient(String username) throws ExecutionException, InterruptedException {
+        return getUserRepos(username, githubApiRestClient);
+    }
+
+    private List<Response> getUserRepos(String username,GithubClient githubClient) throws ExecutionException, InterruptedException {
+        List<Repo> reposByUsername = githubClient.getReposByUsername(username);
         List<CompletableFuture<Response>> futures = reposByUsername.stream()
                 .filter(repo -> !repo.fork())
                 .map(repo -> CompletableFuture.supplyAsync(() -> new Response(
                         repo.name(),
                         repo.owner().login(),
-                        getResponseBranch(repo)
+                        getResponseBranch(repo, githubClient)
                 ), executorService))
                 .toList();
-
 
         CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
         allOf.get();
@@ -38,9 +46,11 @@ public class GithubService {
                 .toList();
     }
 
-    private List<ResponseBranch> getResponseBranch(Repo repo) {
-        return githubApiOpenFeign.getBranchNameAndSha(repo.owner().login(), repo.name()).stream()
+    private List<ResponseBranch> getResponseBranch(Repo repo, GithubClient githubClient) {
+        return githubClient.getBranchNameAndSha(repo.owner().login(), repo.name()).stream()
                 .map(branch -> new ResponseBranch(branch.name(), branch.commit().sha()))
                 .toList();
     }
+
+
 }
