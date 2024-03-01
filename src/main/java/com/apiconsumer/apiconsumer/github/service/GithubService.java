@@ -1,4 +1,4 @@
-package com.apiconsumer.apiconsumer.github;
+package com.apiconsumer.apiconsumer.github.service;
 
 import com.apiconsumer.apiconsumer.github.client.GithubApiOpenFeign;
 import com.apiconsumer.apiconsumer.github.client.GithubApiRestClient;
