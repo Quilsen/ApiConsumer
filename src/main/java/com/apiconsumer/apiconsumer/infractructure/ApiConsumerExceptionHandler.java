@@ -3,14 +3,13 @@ package com.apiconsumer.apiconsumer.infractructure;
 import com.apiconsumer.apiconsumer.github.response.CustomResponse;
 import feign.FeignException;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 @Log4j2
 @RestControllerAdvice

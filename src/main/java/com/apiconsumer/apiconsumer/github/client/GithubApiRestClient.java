@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class GithubApiRestClient implements GithubClient {
-    private RestClient restClient = RestClient.create("https://api.github.com");
+    private final RestClient restClient = RestClient.create("https://api.github.com");
 
     public List<Repo> getReposByUsername(String username) {
         return restClient.get()
