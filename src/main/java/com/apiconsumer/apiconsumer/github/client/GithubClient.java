@@ -6,6 +6,6 @@ import com.apiconsumer.apiconsumer.github.repo.Repo;
 import java.util.List;
 
 public interface GithubClient {
-    List<Repo> getReposByUsername(String username);
-    List<Branch> getBranchNameAndSha(String username, String reponame);
+    List<Repo> getReposByUsername(String userName);
+    List<Branch> getBranchNameAndSha(String userName, String repoName);
 }

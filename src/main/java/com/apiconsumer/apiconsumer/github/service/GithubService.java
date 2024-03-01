@@ -22,16 +22,16 @@ public class GithubService {
     private final GithubApiRestClient githubApiRestClient;
     private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
-    public List<Response> getUserReposOpenFeign(String username) throws ExecutionException, InterruptedException {
-        return getUserRepos(username, githubApiOpenFeign);
+    public List<Response> getUserReposOpenFeign(String userName) throws ExecutionException, InterruptedException {
+        return getUserRepos(userName, githubApiOpenFeign);
     }
 
-    public List<Response> getUserReposRestClient(String username) throws ExecutionException, InterruptedException {
-        return getUserRepos(username, githubApiRestClient);
+    public List<Response> getUserReposRestClient(String userName) throws ExecutionException, InterruptedException {
+        return getUserRepos(userName, githubApiRestClient);
     }
 
-    private List<Response> getUserRepos(String username, GithubClient githubClient) throws ExecutionException, InterruptedException {
-        List<Repo> reposByUsername = githubClient.getReposByUsername(username);
+    private List<Response> getUserRepos(String userName, GithubClient githubClient) throws ExecutionException, InterruptedException {
+        List<Repo> reposByUsername = githubClient.getReposByUsername(userName);
         List<CompletableFuture<Response>> futures = reposByUsername.stream()
                 .filter(repo -> !repo.fork())
                 .map(repo -> CompletableFuture.supplyAsync(() -> new Response(

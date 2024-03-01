@@ -15,14 +15,14 @@ import java.util.List;
         url = "https://api.github.com")
 public interface GithubApiOpenFeign extends GithubClient {
     @RequestMapping(method = RequestMethod.GET,
-            value = "/users/{username}/repos",
+            value = "/users/{userName}/repos",
             headers = "Accept: application/json")
-    List<Repo> getReposByUsername(@PathVariable("username") String username);
+    List<Repo> getReposByUsername(@PathVariable("userName") String userName);
 
     @RequestMapping(method = RequestMethod.GET,
-            value = "/repos/{username}/{reponame}/branches",
+            value = "/repos/{userName}/{repoName}/branches",
             headers = "Accept: application/json")
-    List<Branch> getBranchNameAndSha(@PathVariable("username") String username,
-                                     @PathVariable("reponame") String reponame);
+    List<Branch> getBranchNameAndSha(@PathVariable("userName") String userName,
+                                     @PathVariable("repoName") String repoName);
 
 }

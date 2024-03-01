@@ -12,17 +12,17 @@ import java.util.List;
 public class GithubApiRestClient implements GithubClient {
     private final RestClient restClient = RestClient.create("https://api.github.com");
 
-    public List<Repo> getReposByUsername(String username) {
+    public List<Repo> getReposByUsername(String userName) {
         return restClient.get()
-                .uri("/users/{username}/repos", username)
+                .uri("/users/{userName}/repos", userName)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
                 });
     }
 
-    public List<Branch> getBranchNameAndSha(String username, String reponame) {
+    public List<Branch> getBranchNameAndSha(String userName, String repoName) {
         return restClient.get()
-                .uri("/repos/{username}/{reponame}/branches", username, reponame)
+                .uri("/repos/{userName}/{repoName}/branches", userName, repoName)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
                 });

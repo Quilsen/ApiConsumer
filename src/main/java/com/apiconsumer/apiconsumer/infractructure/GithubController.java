@@ -19,17 +19,17 @@ import java.util.concurrent.ExecutionException;
 class GithubController {
     private final GithubService githubService;
 
-    @GetMapping(value = "/openfeign/{username}",headers = "Accept=application/json")
-    ResponseEntity<List<Response>> listUserRepositories(@PathVariable String username) throws ExecutionException, InterruptedException {
-        log.info("There is openFeign request for username: " + username);
-        List<Response> userRepos = githubService.getUserReposOpenFeign(username);
+    @GetMapping(value = "/openfeign/{userName}",headers = "Accept=application/json")
+    ResponseEntity<List<Response>> listUserRepositories(@PathVariable String userName) throws ExecutionException, InterruptedException {
+        log.info("There is openFeign request for username: " + userName);
+        List<Response> userRepos = githubService.getUserReposOpenFeign(userName);
         return ResponseEntity.ok(userRepos);
     }
 
-    @GetMapping(value = "/restclient/{username}", headers =  "Accept=application/json")
-    ResponseEntity<List<Response>> listUserRepositoriesRestClient(@PathVariable String username) throws ExecutionException, InterruptedException {
-        log.info("There is restClient request for username: " + username);
-        List<Response> userRepos = githubService.getUserReposRestClient(username);
+    @GetMapping(value = "/restclient/{userName}", headers =  "Accept=application/json")
+    ResponseEntity<List<Response>> listUserRepositoriesRestClient(@PathVariable String userName) throws ExecutionException, InterruptedException {
+        log.info("There is restClient request for username: " + userName);
+        List<Response> userRepos = githubService.getUserReposRestClient(userName);
         return ResponseEntity.ok(userRepos);
     }
 }
