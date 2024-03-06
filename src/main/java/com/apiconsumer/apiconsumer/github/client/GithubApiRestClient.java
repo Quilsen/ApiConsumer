@@ -1,7 +1,7 @@
 package com.apiconsumer.apiconsumer.github.client;
 
 import com.apiconsumer.apiconsumer.github.branch.Branch;
-import com.apiconsumer.apiconsumer.github.repo.Repo;
+import com.apiconsumer.apiconsumer.github.repository.Repository;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -12,7 +12,7 @@ import java.util.List;
 public class GithubApiRestClient implements GithubClient {
     private final RestClient restClient = RestClient.create("https://api.github.com");
 
-    public List<Repo> getReposByUsername(String userName) {
+    public List<Repository> getReposByUsername(String userName) {
         return restClient.get()
                 .uri("/users/{userName}/repos", userName)
                 .retrieve()

@@ -1,7 +1,7 @@
 package com.apiconsumer.apiconsumer.github.client;
 
 import com.apiconsumer.apiconsumer.github.branch.Branch;
-import com.apiconsumer.apiconsumer.github.repo.Repo;
+import com.apiconsumer.apiconsumer.github.repository.Repository;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ public interface GithubApiOpenFeign extends GithubClient {
     @RequestMapping(method = RequestMethod.GET,
             value = "/users/{userName}/repos",
             headers = "Accept: application/json")
-    List<Repo> getReposByUsername(@PathVariable("userName") String userName);
+    List<Repository> getReposByUsername(@PathVariable("userName") String userName);
 
     @RequestMapping(method = RequestMethod.GET,
             value = "/repos/{userName}/{repoName}/branches",
