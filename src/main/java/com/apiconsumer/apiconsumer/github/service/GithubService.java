@@ -9,7 +9,6 @@ import com.apiconsumer.apiconsumer.github.repository.Repository;
 import com.apiconsumer.apiconsumer.github.response.Response;
 import com.apiconsumer.apiconsumer.github.response.ResponseBranch;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public class GithubService {
     private void saveRepoEntity(List<Response> responseList){
         responseList.stream()
                 .map(response -> new Repo(response.repoOwnerLogin(), response.repoName()))
-                .filter(repo -> !repoRepository.findAllByOwnerNameAndRepoName(repo.getOwnerName(), repo.getRepoName()).isPresent())
+                .filter(repo -> repoRepository.findAllByOwnerNameAndRepoName(repo.getOwnerName(), repo.getRepoName()).isEmpty())
                 .forEach(repoRepository::save);
 
     }
