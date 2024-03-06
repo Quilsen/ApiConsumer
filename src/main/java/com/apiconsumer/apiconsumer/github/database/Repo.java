@@ -1,4 +1,4 @@
-package com.apiconsumer.apiconsumer.database;
+package com.apiconsumer.apiconsumer.github.database;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,11 +8,16 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-class Repo {
+public class Repo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String ownerName;
     private String repoName;
+
+    public Repo(String ownerName, String repoName) {
+        this.ownerName = ownerName;
+        this.repoName = repoName;
+    }
 }
