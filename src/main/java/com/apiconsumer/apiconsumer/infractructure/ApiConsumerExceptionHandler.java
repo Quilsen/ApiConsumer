@@ -3,7 +3,6 @@ package com.apiconsumer.apiconsumer.infractructure;
 import com.apiconsumer.apiconsumer.github.exception.RepoForThisIdNotFound;
 import com.apiconsumer.apiconsumer.github.exception.RepoForThisUserNameNotFound;
 import com.apiconsumer.apiconsumer.github.response.CustomResponse;
-import com.apiconsumer.apiconsumer.github.response.Response;
 import feign.FeignException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
