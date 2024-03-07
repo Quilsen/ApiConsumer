@@ -6,7 +6,6 @@ import com.apiconsumer.apiconsumer.github.service.GithubService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +32,6 @@ class GithubController {
     List<Response> listUserRepositoriesRestClient(@PathVariable String userName) throws ExecutionException, InterruptedException {
         log.info("There is restClient request for username: " + userName);
         return githubService.getUserReposRestClient(userName);
-        ;
     }
 
     @GetMapping("/{userName}")
