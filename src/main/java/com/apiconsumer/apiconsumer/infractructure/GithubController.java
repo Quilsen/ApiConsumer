@@ -20,24 +20,28 @@ class GithubController {
     private final GithubService githubService;
 
     @GetMapping(value = "/openfeign/{userName}", headers = "Accept=application/json")
-    ResponseEntity<List<Response>> listUserRepositories(@PathVariable String userName) throws ExecutionException, InterruptedException {
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    List<Response> listUserRepositories(@PathVariable String userName) throws ExecutionException, InterruptedException {
         log.info("There is openFeign request for username: " + userName);
-        List<Response> userRepos = githubService.getUserReposOpenFeign(userName);
-        return ResponseEntity.ok(userRepos);
+        return githubService.getUserReposOpenFeign(userName);
     }
 
     @GetMapping(value = "/restclient/{userName}", headers = "Accept=application/json")
-    ResponseEntity<List<Response>> listUserRepositoriesRestClient(@PathVariable String userName) throws ExecutionException, InterruptedException {
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    List<Response> listUserRepositoriesRestClient(@PathVariable String userName) throws ExecutionException, InterruptedException {
         log.info("There is restClient request for username: " + userName);
-        List<Response> userRepos = githubService.getUserReposRestClient(userName);
-        return ResponseEntity.ok(userRepos);
+        return githubService.getUserReposRestClient(userName);
+        ;
     }
 
     @GetMapping("/{userName}")
-    ResponseEntity<List<RepoDto>> getRepoByUserName(@PathVariable String userName) {
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    List<RepoDto> getRepoByUserName(@PathVariable String userName) {
         log.info("Request for database entities: " + userName);
-        List<RepoDto> repoDtoList = githubService.getRepoByUsername(userName);
-        return ResponseEntity.ok(repoDtoList);
+        return githubService.getRepoByUsername(userName);
     }
 
     @PostMapping("/create")
@@ -48,7 +52,6 @@ class GithubController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRepoById(@PathVariable Long id) {
         githubService.deleteRepoById(id);
