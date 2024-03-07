@@ -1,6 +1,9 @@
 package com.apiconsumer.apiconsumer.infractructure;
 
+import com.apiconsumer.apiconsumer.github.exception.RepoForThisIdNotFound;
+import com.apiconsumer.apiconsumer.github.exception.RepoForThisUserNameNotFound;
 import com.apiconsumer.apiconsumer.github.response.CustomResponse;
+import com.apiconsumer.apiconsumer.github.response.Response;
 import feign.FeignException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -51,6 +54,20 @@ public class ApiConsumerExceptionHandler{
         log.warn(e.getMessage());
         CustomResponse customResponse = new CustomResponse(e.getStatusCode().value(), MSG_NOT_ACCEPTABLE);
         return new ResponseEntity<>(customResponse.toString(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(RepoForThisUserNameNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<CustomResponse> handleRepoForThisUserNameNotFound(RepoForThisUserNameNotFound e){
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.NOT_FOUND.value(),e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RepoForThisIdNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<CustomResponse> handleRepoForThisIdNotFound(RepoForThisIdNotFound e){
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(new CustomResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()),HttpStatus.NOT_FOUND);
     }
 
 }

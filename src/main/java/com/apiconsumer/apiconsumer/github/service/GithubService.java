@@ -4,7 +4,11 @@ import com.apiconsumer.apiconsumer.github.client.GithubApiOpenFeign;
 import com.apiconsumer.apiconsumer.github.client.GithubApiRestClient;
 import com.apiconsumer.apiconsumer.github.client.GithubClient;
 import com.apiconsumer.apiconsumer.github.database.Repo;
+import com.apiconsumer.apiconsumer.github.database.RepoDto;
+import com.apiconsumer.apiconsumer.github.database.RepoDtoMapper;
 import com.apiconsumer.apiconsumer.github.database.RepoRepository;
+import com.apiconsumer.apiconsumer.github.exception.RepoForThisIdNotFound;
+import com.apiconsumer.apiconsumer.github.exception.RepoForThisUserNameNotFound;
 import com.apiconsumer.apiconsumer.github.repository.Repository;
 import com.apiconsumer.apiconsumer.github.response.Response;
 import com.apiconsumer.apiconsumer.github.response.ResponseBranch;
@@ -23,6 +27,7 @@ public class GithubService {
     private final GithubApiOpenFeign githubApiOpenFeign;
     private final GithubApiRestClient githubApiRestClient;
     private final RepoRepository repoRepository;
+    private final RepoDtoMapper repoDtoMapper;
     private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
     public List<Response> getUserReposOpenFeign(String userName) throws ExecutionException, InterruptedException {
@@ -31,6 +36,28 @@ public class GithubService {
 
     public List<Response> getUserReposRestClient(String userName) throws ExecutionException, InterruptedException {
         return getUserRepos(userName, githubApiRestClient);
+    }
+
+    public List<RepoDto> getRepoByUsername(String userName) {
+        List<Repo> allByOwnerName = repoRepository.findAllByOwnerName(userName);
+        if (allByOwnerName.isEmpty()) {
+            throw new RepoForThisUserNameNotFound(userName);
+        }
+        return allByOwnerName.stream()
+                .map(repoDtoMapper::map)
+                .toList();
+    }
+
+    public RepoDto saveRepo(RepoDto repoDto) {
+        Repo repo = repoDtoMapper.map(repoDto);
+        Repo savedRepo = repoRepository.save(repo);
+        return repoDtoMapper.map(savedRepo);
+    }
+
+    public void deleteRepoById(Long id) {
+        Repo repo = repoRepository.findById(id)
+                .orElseThrow(() -> new RepoForThisIdNotFound(id));
+        repoRepository.delete(repo);
     }
 
     private List<Response> getUserRepos(String userName, GithubClient githubClient) throws ExecutionException, InterruptedException {
@@ -61,7 +88,7 @@ public class GithubService {
                 .toList();
     }
 
-    private void saveRepoEntity(List<Response> responseList){
+    private void saveRepoEntity(List<Response> responseList) {
         responseList.stream()
                 .map(response -> new Repo(response.repoOwnerLogin(), response.repoName()))
                 .filter(repo -> repoRepository.findAllByOwnerNameAndRepoName(repo.getOwnerName(), repo.getRepoName()).isEmpty())
