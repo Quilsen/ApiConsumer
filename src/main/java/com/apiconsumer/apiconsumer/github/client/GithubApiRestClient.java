@@ -12,7 +12,7 @@ import java.util.List;
 public class GithubApiRestClient implements GithubClient {
     private final RestClient restClient = RestClient.create("https://api.github.com");
 
-    public List<Repository> getReposByUsername(String userName) {
+    public List<Repository> getRepositoriesByUsername(String userName) {
         return restClient.get()
                 .uri("/users/{userName}/repos", userName)
                 .retrieve()

@@ -17,7 +17,7 @@ public interface GithubApiOpenFeign extends GithubClient {
     @RequestMapping(method = RequestMethod.GET,
             value = "/users/{userName}/repos",
             headers = "Accept: application/json")
-    List<Repository> getReposByUsername(@PathVariable("userName") String userName);
+    List<Repository> getRepositoriesByUsername(@PathVariable("userName") String userName);
 
     @RequestMapping(method = RequestMethod.GET,
             value = "/repos/{userName}/{repoName}/branches",
