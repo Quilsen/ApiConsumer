@@ -23,7 +23,7 @@ class GithubController {
     @ResponseStatus(HttpStatus.OK)
     List<Response> listUserRepositories(@PathVariable String userName) throws ExecutionException, InterruptedException {
         log.info("There is openFeign request for username: " + userName);
-        return githubService.getUserReposOpenFeign(userName);
+        return githubService.getUserRepositoriesOpenFeign(userName);
     }
 
     @GetMapping(value = "/restclient/{userName}", headers = "Accept=application/json")
@@ -34,7 +34,7 @@ class GithubController {
         return githubService.getUserReposRestClient(userName);
     }
 
-    @GetMapping("/{userName}")
+    @GetMapping("/get/{userName}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     List<RepoDto> getRepoByUserName(@PathVariable String userName) {
@@ -46,12 +46,23 @@ class GithubController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     RepoDto saveRepo(@RequestBody RepoDto repoDto) {
+        log.info("Post request for:" + repoDto);
         return githubService.saveRepo(repoDto);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRepoById(@PathVariable Long id) {
+        log.info("Delete request for repo id: " + id);
         githubService.deleteRepoById(id);
     }
+
+    @PatchMapping("/update/{id}")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    RepoDto patchRepo(@PathVariable Long id, @RequestBody RepoDto repoDto){
+        log.info("Patch request for id: " + id);
+        return githubService.patchRepoById(id, repoDto);
+    }
+
 }

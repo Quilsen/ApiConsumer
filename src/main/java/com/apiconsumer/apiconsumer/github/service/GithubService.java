@@ -30,12 +30,12 @@ public class GithubService {
     private final RepoDtoMapper repoDtoMapper;
     private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
 
-    public List<Response> getUserReposOpenFeign(String userName) throws ExecutionException, InterruptedException {
-        return getUserRepos(userName, githubApiOpenFeign);
+    public List<Response> getUserRepositoriesOpenFeign(String userName) throws ExecutionException, InterruptedException {
+        return getUserRepositories(userName, githubApiOpenFeign);
     }
 
     public List<Response> getUserReposRestClient(String userName) throws ExecutionException, InterruptedException {
-        return getUserRepos(userName, githubApiRestClient);
+        return getUserRepositories(userName, githubApiRestClient);
     }
 
     public List<RepoDto> getRepoByUsername(String userName) {
@@ -60,8 +60,21 @@ public class GithubService {
         repoRepository.delete(repo);
     }
 
-    private List<Response> getUserRepos(String userName, GithubClient githubClient) throws ExecutionException, InterruptedException {
-        List<Repository> reposByUsername = githubClient.getReposByUsername(userName);
+    public RepoDto patchRepoById(Long id, RepoDto repoDto) {
+        Repo repo = repoRepository.findById(id)
+                .orElseThrow(() -> new RepoForThisIdNotFound(id));
+        if (repoDto.getOwnerName() != null) {
+            repo.setOwnerName(repoDto.getOwnerName());
+        }
+        if (repoDto.getRepoName() != null) {
+            repo.setRepoName(repoDto.getRepoName());
+        }
+        Repo saved = repoRepository.save(repo);
+        return repoDtoMapper.map(saved);
+    }
+
+    private List<Response> getUserRepositories(String userName, GithubClient githubClient) throws ExecutionException, InterruptedException {
+        List<Repository> reposByUsername = githubClient.getRepositoriesByUsername(userName);
         List<CompletableFuture<Response>> futures = reposByUsername.stream()
                 .filter(repository -> !repository.fork())
                 .map(repository -> CompletableFuture.supplyAsync(() -> new Response(
@@ -95,6 +108,5 @@ public class GithubService {
                 .forEach(repoRepository::save);
 
     }
-
 
 }
