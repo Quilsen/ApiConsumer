@@ -19,7 +19,6 @@ class GithubController {
     private final GithubService githubService;
 
     @GetMapping(value = "/openfeign/{userName}", headers = "Accept=application/json")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     List<Response> listUserRepositories(@PathVariable String userName) throws ExecutionException, InterruptedException {
         log.info("There is openFeign request for username: " + userName);
@@ -27,7 +26,6 @@ class GithubController {
     }
 
     @GetMapping(value = "/restclient/{userName}", headers = "Accept=application/json")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     List<Response> listUserRepositoriesRestClient(@PathVariable String userName) throws ExecutionException, InterruptedException {
         log.info("There is restClient request for username: " + userName);
@@ -35,7 +33,6 @@ class GithubController {
     }
 
     @GetMapping("/get/{userName}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     List<RepoDto> getRepoByUserName(@PathVariable String userName) {
         log.info("Request for database entities: " + userName);
@@ -43,7 +40,6 @@ class GithubController {
     }
 
     @PostMapping("/create")
-    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     RepoDto saveRepo(@RequestBody RepoDto repoDto) {
         log.info("Post request for:" + repoDto);
@@ -58,7 +54,6 @@ class GithubController {
     }
 
     @PatchMapping("/update/{id}")
-    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     RepoDto patchRepo(@PathVariable Long id, @RequestBody RepoDto repoDto){
         log.info("Patch request for id: " + id);
