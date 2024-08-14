@@ -6,6 +6,7 @@ import com.apiconsumer.apiconsumer.github.response.CustomResponse;
 import feign.FeignException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,11 +49,11 @@ public class ApiConsumerExceptionHandler{
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ResponseEntity<String> handleHttpMediaNotAcceptableException(HttpMediaTypeNotAcceptableException e){
+    public ResponseEntity<CustomResponse> handleHttpMediaNotAcceptableException(HttpMediaTypeNotAcceptableException e){
         log.warn(e.getMessage());
-        CustomResponse customResponse = new CustomResponse(e.getStatusCode().value(), MSG_NOT_ACCEPTABLE);
-        return new ResponseEntity<>(customResponse.toString(), HttpStatus.NOT_ACCEPTABLE);
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new CustomResponse(e.getStatusCode().value(), MSG_NOT_ACCEPTABLE));
     }
 
     @ExceptionHandler(RepoForThisUserNameNotFound.class)
